@@ -19,15 +19,25 @@
 #[cfg(feature = "serde")]
 extern crate serde;
 
-extern crate chrono;
-
-mod opening_hours;
-mod timespan;
-mod datespan;
-
-pub use self::opening_hours::OpeningHours;
-pub use self::timespan::TimeSpan;
-pub use self::datespan::DateSpan;
+#[cfg(test)]
+extern crate serde_json;
 
 #[cfg(test)]
-mod tests;
+extern crate chrono_tz;
+
+extern crate chrono;
+extern crate timespan;
+
+#[cfg(test)]
+mod opening_hours_test;
+
+mod opening_hours;
+
+pub use self::opening_hours::OpeningHours;
+
+// TODO:
+// - finish tests
+// - add serde
+// - add serde tests
+// - add integration test
+// - finish example

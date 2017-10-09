@@ -16,18 +16,105 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use {TimeSpan, DateSpan};
 use std;
-use chrono::{Weekday, TimeZone, ParseError};
+use timespan::{DateSpan, DateTimeSpan, NaiveTimeSpan};
+use chrono::{TimeZone, Weekday, DateTime, Datelike};
 
-pub struct OpeningHours<Tz: TimeZone> {
-    open_hours: Vec<TimeSpan>,
-    days_of_week: Vec<Weekday>,
-    valid_days: Vec<DateSpan<Tz>>,
+#[derive(PartialEq, Clone)]
+pub struct OpeningHours<T: TimeZone> {
+    pub open_hours: Vec<NaiveTimeSpan>,
+    pub days_of_week: Vec<Weekday>,
+    pub valid_days: Vec<DateSpan<T>>,
 }
 
-// TODO: add std::fmt:Debug impl
-// TODO: add std::fmt:Display impl
-// TODO: add serde feature impl
-// TODO: add serialize test
-// TODO: add deserialize test
+impl<T: TimeZone> OpeningHours<T>
+where
+    <T as TimeZone>::Offset: std::marker::Copy {
+    pub fn new(
+        open_hours: Vec<NaiveTimeSpan>,
+        days_of_week: Vec<Weekday>,
+        valid_days: Vec<DateSpan<T>>
+    ) -> OpeningHours<T> {
+        OpeningHours {
+            open_hours: open_hours,
+            days_of_week: days_of_week,
+            valid_days: valid_days,
+        }
+    }
+
+    pub fn contains_datetime(&self, time: DateTime<T>) -> bool {
+        let date = time.date();
+        let weekday = date.weekday();
+
+        if !self.days_of_week.iter().any(|d| *d == weekday) {
+            return false;
+        }
+
+        if !self.valid_days.iter().any(|ds| ds.contains(&date)) {
+            return false;
+        }
+
+        let local = time.naive_local().time();
+
+        self.open_hours.iter().any(|ts| ts.contains(&local))
+    }
+
+    pub fn contains_span(&self, span: &DateTimeSpan<T>) -> bool {
+        let datespan = DateSpan {
+            start: span.start.date(),
+            end: span.end.date(),
+        };
+        let days = span.duration().num_days();
+        let mut weekday = span.start.weekday();
+
+        for _ in 1..days {
+            if !self.days_of_week.iter().any(|d| *d == weekday) {
+                return false;
+            }
+
+            weekday = weekday.succ();
+        }
+
+        if !self.valid_days.iter().any(|ts| ts.is_superset(&datespan)) {
+            return false;
+        }
+
+        let localspan = NaiveTimeSpan {
+            start: span.start.naive_local().time(),
+            end: span.end.naive_local().time(),
+        };
+
+        self.open_hours.iter().any(|ts| ts.is_superset(&localspan))
+    }
+}
+
+impl<T: TimeZone> std::fmt::Debug for OpeningHours<T>
+where
+    <T as TimeZone>::Offset: std::marker::Copy + std::fmt::Display {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let hours = self.open_hours
+            .iter()
+            .map(|ref ts| format!("{}", ts))
+            .collect::<Vec<String>>()
+            .join(", ");
+        let weekdays = self.days_of_week
+            .iter()
+            .map(|ref w| format!("{:#?}", w))
+            .collect::<Vec<String>>()
+            .join(", ");
+        let valid_days = self.valid_days
+            .iter()
+            .map(|ref ds| format!("{:#?}", ds))
+            .collect::<Vec<String>>()
+            .join(", ");
+        write!(f, "{}\n{}\n{}", hours, weekdays, valid_days)
+    }
+}
+
+impl<T: TimeZone> std::fmt::Display for OpeningHours<T>
+where
+    <T as TimeZone>::Offset: std::marker::Copy + std::fmt::Display {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        std::fmt::Debug::fmt(self, f)
+    }
+}

@@ -16,11 +16,11 @@ Put this in your `Cargo.toml`:
 opening_hours = "^0"
 ```
 
-Or, if you want [Serde](https://github.com/serde-rs/serde) support, include the features like this:
+Or, if you want [Serde](https://github.com/serde-rs/serde) support, include itlike this:
 
 ```toml
 [dependencies]
-chrono = { version = "^0", features = ["serde"] }
+opening_hours = { version = "^0", features = ["with-serde"] }
 ```
 
 Then put this in your crate root:

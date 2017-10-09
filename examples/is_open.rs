@@ -1,4 +1,4 @@
-// opening-hours - Store opening hours of a service or place.
+// is_open - A simple cli to check whether a is opened at a given time.
 //
 // Copyright (C) 2017
 //     Fin Christensen <christensen.fin@gmail.com>
@@ -16,6 +16,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![warn(missing_docs)]
+extern crate opening_hours;
+extern crate chrono;
 
-//! This module holds unit tests for `opening-hours`.
+fn usage() {
+    // TODO
+    println!("Please provide exactly 6 arguments!
+Usage: [span] [point] [span_fmt] [start_fmt] [end_fmt] [point_fmt]");
+}
+
+fn main() {
+    let mut args = std::env::args();
+
+    if args.len() != 7 {
+        usage();
+        std::process::exit(1);
+    }
+
+    args.next();
+    std::process::exit(0);
+}
