@@ -127,16 +127,3 @@ fn contains_span_test() {
     assert!(!oh.contains_span(&partially_contained_datespan));
     assert!(!oh.contains_span(&not_contained_datespan));
 }
-
-#[cfg(feature = "with-serde")]
-mod with_serde {
-    #[test]
-    fn serialize_test() {
-        // TODO
-    }
-
-    #[test]
-    fn deserialize_test() {
-        // TODO
-    }
-}

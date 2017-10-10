@@ -19,6 +19,10 @@
 #[cfg(feature = "serde")]
 extern crate serde;
 
+#[cfg(feature = "serde_derive")]
+#[cfg_attr(feature = "serde_derive", macro_use)]
+extern crate serde_derive;
+
 #[cfg(test)]
 extern crate serde_json;
 
@@ -36,8 +40,6 @@ mod opening_hours;
 pub use self::opening_hours::OpeningHours;
 
 // TODO:
-// - add serde
-// - add serde tests
 // - add integration test
 // - finish example
 // - write documentation

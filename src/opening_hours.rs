@@ -21,7 +21,8 @@ use timespan::{DateSpan, DateTimeSpan, NaiveTimeSpan};
 use chrono::{TimeZone, Weekday, DateTime, Datelike};
 
 #[derive(PartialEq, Clone)]
-pub struct OpeningHours<T: TimeZone> {
+#[cfg_attr(feature = "with-serde", derive(Serialize, Deserialize))]
+pub struct OpeningHours<T: TimeZone> where <T as TimeZone>::Offset: std::marker::Copy + std::fmt::Display {
     pub open_hours: Vec<NaiveTimeSpan>,
     pub days_of_week: Vec<Weekday>,
     pub valid_days: Vec<DateSpan<T>>,
@@ -29,7 +30,7 @@ pub struct OpeningHours<T: TimeZone> {
 
 impl<T: TimeZone> OpeningHours<T>
 where
-    <T as TimeZone>::Offset: std::marker::Copy {
+    <T as TimeZone>::Offset: std::marker::Copy + std::fmt::Display {
     pub fn new(
         open_hours: Vec<NaiveTimeSpan>,
         days_of_week: Vec<Weekday>,
