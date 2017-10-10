@@ -18,8 +18,8 @@
 
 use OpeningHours;
 use chrono::TimeZone;
-use chrono_tz::Europe::Berlin;
 use timespan::{DateSpan, DateTimeSpan};
+use chrono_tz::Europe::Berlin;
 
 #[test]
 fn new_test() {
@@ -92,34 +92,31 @@ fn contains_span_test() {
 
     let contained = DateTimeSpan::from_utc_datetimespan(
         &"2017-07-12T10:00:00 - 2017-07-12T11:00:00".parse().unwrap(),
-        &Berlin,
+        &Berlin
     );
-    let partially_contained_datetime =
-        DateTimeSpan::from_utc_datetimespan(
-            &"2017-07-12T11:00:00 - 2017-07-12T12:30:00".parse().unwrap(),
-            &Berlin,
-        );
+    let partially_contained_datetime = DateTimeSpan::from_utc_datetimespan(
+        &"2017-07-12T11:00:00 - 2017-07-12T12:30:00".parse().unwrap(),
+        &Berlin
+    );
     let not_contained_datetime = DateTimeSpan::from_utc_datetimespan(
         &"2017-07-12T07:00:00 - 2017-07-12T08:00:00".parse().unwrap(),
-        &Berlin,
+        &Berlin
     );
-    let partially_contained_weekdays =
-        DateTimeSpan::from_utc_datetimespan(
-            &"2017-07-12T15:00:00 - 2017-07-13T10:00:00".parse().unwrap(),
-            &Berlin,
-        );
+    let partially_contained_weekdays = DateTimeSpan::from_utc_datetimespan(
+        &"2017-07-12T15:00:00 - 2017-07-13T10:00:00".parse().unwrap(),
+        &Berlin
+    );
     let not_contained_weekdays = DateTimeSpan::from_utc_datetimespan(
         &"2017-07-13T10:00:00 - 2017-07-13T11:00:00".parse().unwrap(),
-        &Berlin,
+        &Berlin
     );
-    let partially_contained_datespan =
-        DateTimeSpan::from_utc_datetimespan(
-            &"2017-09-01T15:00:00 - 2017-09-02T10:00:00".parse().unwrap(),
-            &Berlin,
-        );
+    let partially_contained_datespan = DateTimeSpan::from_utc_datetimespan(
+        &"2017-09-01T15:00:00 - 2017-09-02T10:00:00".parse().unwrap(),
+        &Berlin
+    );
     let not_contained_datespan = DateTimeSpan::from_utc_datetimespan(
         &"2017-03-06T10:00:00 - 2017-04-06T11:00:00".parse().unwrap(),
-        &Berlin,
+        &Berlin
     );
 
     assert!(oh.contains_span(&contained));

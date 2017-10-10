@@ -21,10 +21,8 @@ extern crate chrono;
 
 fn usage() {
     // TODO
-    println!(
-        "Please provide exactly 6 arguments!
-Usage: [span] [point] [span_fmt] [start_fmt] [end_fmt] [point_fmt]"
-    );
+    println!("Please provide exactly 6 arguments!
+Usage: [span] [point] [span_fmt] [start_fmt] [end_fmt] [point_fmt]");
 }
 
 fn main() {
