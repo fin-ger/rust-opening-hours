@@ -36,8 +36,9 @@ mod opening_hours;
 pub use self::opening_hours::OpeningHours;
 
 // TODO:
-// - finish tests
 // - add serde
 // - add serde tests
 // - add integration test
 // - finish example
+// - write documentation
+// - tag and publish on crates.io

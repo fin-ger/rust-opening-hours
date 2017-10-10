@@ -17,7 +17,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use OpeningHours;
-use timespan::DateSpan;
+use chrono::TimeZone;
+use timespan::{DateSpan, DateTimeSpan};
 use chrono_tz::Europe::Berlin;
 
 #[test]
@@ -42,12 +43,89 @@ fn new_test() {
 
 #[test]
 fn contains_datetime_test() {
-    // TODO
+    let oh = OpeningHours::new(
+        vec![
+            "09:00:00 - 12:00:00".parse().unwrap(),
+            "13:00:00 - 17:00:00".parse().unwrap(),
+        ],
+        vec![
+            "Mon".parse().unwrap(),
+            "Tue".parse().unwrap(),
+            "Wed".parse().unwrap(),
+            "Fri".parse().unwrap(),
+        ],
+        vec![
+            DateSpan::from_utc_datespan(&"2017-06-01 - 2017-09-01".parse().unwrap(), &Berlin),
+            DateSpan::from_utc_datespan(&"2017-10-01 - 2018-01-01".parse().unwrap(), &Berlin),
+        ],
+    );
+
+    let contained = Berlin.from_utc_datetime(&"2017-07-12T11:00:00".parse().unwrap());
+    let datetime_err = Berlin.from_utc_datetime(&"2017-07-12T12:30:00".parse().unwrap());
+    let weekday_err = Berlin.from_utc_datetime(&"2017-07-13T11:00:00".parse().unwrap());
+    let date_err = Berlin.from_utc_datetime(&"2017-04-12T11:00:00".parse().unwrap());
+
+    assert!(oh.contains_datetime(contained));
+    assert!(!oh.contains_datetime(datetime_err));
+    assert!(!oh.contains_datetime(weekday_err));
+    assert!(!oh.contains_datetime(date_err));
 }
 
 #[test]
 fn contains_span_test() {
-    // TODO
+    let oh = OpeningHours::new(
+        vec![
+            "09:00:00 - 12:00:00".parse().unwrap(),
+            "13:00:00 - 17:00:00".parse().unwrap(),
+        ],
+        vec![
+            "Mon".parse().unwrap(),
+            "Tue".parse().unwrap(),
+            "Wed".parse().unwrap(),
+            "Fri".parse().unwrap(),
+        ],
+        vec![
+            DateSpan::from_utc_datespan(&"2017-06-01 - 2017-09-01".parse().unwrap(), &Berlin),
+            DateSpan::from_utc_datespan(&"2017-10-01 - 2018-01-01".parse().unwrap(), &Berlin),
+        ],
+    );
+
+    let contained = DateTimeSpan::from_utc_datetimespan(
+        &"2017-07-12T10:00:00 - 2017-07-12T11:00:00".parse().unwrap(),
+        &Berlin
+    );
+    let partially_contained_datetime = DateTimeSpan::from_utc_datetimespan(
+        &"2017-07-12T11:00:00 - 2017-07-12T12:30:00".parse().unwrap(),
+        &Berlin
+    );
+    let not_contained_datetime = DateTimeSpan::from_utc_datetimespan(
+        &"2017-07-12T07:00:00 - 2017-07-12T08:00:00".parse().unwrap(),
+        &Berlin
+    );
+    let partially_contained_weekdays = DateTimeSpan::from_utc_datetimespan(
+        &"2017-07-12T15:00:00 - 2017-07-13T10:00:00".parse().unwrap(),
+        &Berlin
+    );
+    let not_contained_weekdays = DateTimeSpan::from_utc_datetimespan(
+        &"2017-07-13T10:00:00 - 2017-07-13T11:00:00".parse().unwrap(),
+        &Berlin
+    );
+    let partially_contained_datespan = DateTimeSpan::from_utc_datetimespan(
+        &"2017-09-01T15:00:00 - 2017-09-02T10:00:00".parse().unwrap(),
+        &Berlin
+    );
+    let not_contained_datespan = DateTimeSpan::from_utc_datetimespan(
+        &"2017-03-06T10:00:00 - 2017-04-06T11:00:00".parse().unwrap(),
+        &Berlin
+    );
+
+    assert!(oh.contains_span(&contained));
+    assert!(!oh.contains_span(&partially_contained_datetime));
+    assert!(!oh.contains_span(&not_contained_datetime));
+    assert!(!oh.contains_span(&partially_contained_weekdays));
+    assert!(!oh.contains_span(&not_contained_weekdays));
+    assert!(!oh.contains_span(&partially_contained_datespan));
+    assert!(!oh.contains_span(&not_contained_datespan));
 }
 
 #[cfg(feature = "with-serde")]

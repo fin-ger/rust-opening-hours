@@ -54,7 +54,7 @@ where
             return false;
         }
 
-        let local = time.naive_local().time();
+        let local = time.naive_utc().time();
 
         self.open_hours.iter().any(|ts| ts.contains(&local))
     }
@@ -64,10 +64,10 @@ where
             start: span.start.date(),
             end: span.end.date(),
         };
-        let days = span.duration().num_days();
+        let days = datespan.duration().num_days() + 1;
         let mut weekday = span.start.weekday();
 
-        for _ in 1..days {
+        for _ in 0..days {
             if !self.days_of_week.iter().any(|d| *d == weekday) {
                 return false;
             }
@@ -80,8 +80,8 @@ where
         }
 
         let localspan = NaiveTimeSpan {
-            start: span.start.naive_local().time(),
-            end: span.end.naive_local().time(),
+            start: span.start.naive_utc().time(),
+            end: span.end.naive_utc().time(),
         };
 
         self.open_hours.iter().any(|ts| ts.is_superset(&localspan))
