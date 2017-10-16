@@ -20,8 +20,8 @@ extern crate opening_hours;
 extern crate timespan;
 extern crate chrono;
 
+use chrono::{DateTime, Utc};
 use opening_hours::OpeningHours;
-use chrono::{Utc, DateTime};
 use timespan::DateTimeSpan;
 
 #[test]
@@ -31,13 +31,11 @@ fn utc() {
             "09:00:00 - 12:00:00".parse().unwrap(),
             "13:00:00 - 17:00:00".parse().unwrap(),
         ],
-        vec![
-            "Mon".parse().unwrap(),
-        ],
+        vec!["Mon".parse().unwrap()],
         vec![
             "2017-06-01T00:00:00 +0200 - 2017-09-01T00:00:00 +0200"
                 .parse::<DateTimeSpan<Utc>>()
-                .unwrap()
+                .unwrap(),
         ],
     );
     let contained = "2017-07-24T10:31:17 +0200"

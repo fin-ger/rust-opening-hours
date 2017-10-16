@@ -8,3 +8,5 @@
 
 # Do not commit backup files
 *~
+
+*.bk

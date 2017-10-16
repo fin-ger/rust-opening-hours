@@ -21,10 +21,10 @@ extern crate timespan;
 extern crate chrono;
 extern crate chrono_tz;
 
-use opening_hours::OpeningHours;
-use timespan::DateTimeSpan;
 use chrono::offset::TimeZone;
 use chrono_tz::Europe::Berlin;
+use opening_hours::OpeningHours;
+use timespan::DateTimeSpan;
 
 #[test]
 fn chrono_tz() {
@@ -33,21 +33,15 @@ fn chrono_tz() {
             "09:00:00 - 12:00:00".parse().unwrap(),
             "13:00:00 - 17:00:00".parse().unwrap(),
         ],
-        vec![
-            "Mon".parse().unwrap(),
-        ],
+        vec!["Mon".parse().unwrap()],
         vec![
             DateTimeSpan::from_utc_datetimespan(
-                &"2017-06-01T00:00:00 - 2017-09-01T00:00:00"
-                    .parse()
-                    .unwrap(),
+                &"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(),
                 &Berlin
-            )
+            ),
         ],
     );
-    let contained = Berlin.from_utc_datetime(
-        &"2017-07-24T10:31:17".parse().unwrap()
-    );
+    let contained = Berlin.from_utc_datetime(&"2017-07-24T10:31:17".parse().unwrap());
 
     assert!(oh.contains_datetime(contained));
 }

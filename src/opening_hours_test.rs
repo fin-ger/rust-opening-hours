@@ -35,8 +35,14 @@ fn new_test() {
             "Fri".parse().unwrap(),
         ],
         vec![
-            DateTimeSpan::from_utc_datetimespan(&"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(), &Berlin),
-            DateTimeSpan::from_utc_datetimespan(&"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(
+                &"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(),
+                &Berlin
+            ),
+            DateTimeSpan::from_utc_datetimespan(
+                &"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(),
+                &Berlin
+            ),
         ],
     );
 }
@@ -55,8 +61,14 @@ fn contains_datetime_test() {
             "Fri".parse().unwrap(),
         ],
         vec![
-            DateTimeSpan::from_utc_datetimespan(&"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(), &Berlin),
-            DateTimeSpan::from_utc_datetimespan(&"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(
+                &"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(),
+                &Berlin
+            ),
+            DateTimeSpan::from_utc_datetimespan(
+                &"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(),
+                &Berlin
+            ),
         ],
     );
 
@@ -85,8 +97,14 @@ fn contains_span_test() {
             "Fri".parse().unwrap(),
         ],
         vec![
-            DateTimeSpan::from_utc_datetimespan(&"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(), &Berlin),
-            DateTimeSpan::from_utc_datetimespan(&"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(
+                &"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(),
+                &Berlin
+            ),
+            DateTimeSpan::from_utc_datetimespan(
+                &"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(),
+                &Berlin
+            ),
         ],
     );
 
