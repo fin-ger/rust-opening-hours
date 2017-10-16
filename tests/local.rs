@@ -1,4 +1,4 @@
-// is_open - A simple cli to check whether a is opened at a given time.
+// opening-hours - Store opening hours of a service or place.
 //
 // Copyright (C) 2017
 //     Fin Christensen <christensen.fin@gmail.com>
@@ -17,22 +17,32 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 extern crate opening_hours;
+extern crate timespan;
 extern crate chrono;
 
-fn usage() {
-    // TODO
-    println!("Please provide exactly 6 arguments!
-Usage: [span] [point] [span_fmt] [start_fmt] [end_fmt] [point_fmt]");
-}
+use opening_hours::OpeningHours;
+use chrono::{Local, DateTime};
+use timespan::DateTimeSpan;
 
-fn main() {
-    let mut args = std::env::args();
+#[test]
+fn local() {
+    let oh = OpeningHours::new(
+        vec![
+            "09:00:00 - 12:00:00".parse().unwrap(),
+            "13:00:00 - 17:00:00".parse().unwrap(),
+        ],
+        vec![
+            "Mon".parse().unwrap(),
+        ],
+        vec![
+            "2017-06-01T00:00:00 +0200 - 2017-09-01T00:00:00 +0200"
+                .parse::<DateTimeSpan<Local>>()
+                .unwrap()
+        ],
+    );
+    let contained = "2017-07-24T10:31:17 +0200"
+        .parse::<DateTime<Local>>()
+        .unwrap();
 
-    if args.len() != 7 {
-        usage();
-        std::process::exit(1);
-    }
-
-    args.next();
-    std::process::exit(0);
+    assert!(oh.contains_datetime(contained));
 }

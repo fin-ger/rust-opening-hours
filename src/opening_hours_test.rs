@@ -19,7 +19,7 @@
 use OpeningHours;
 use chrono::TimeZone;
 use chrono_tz::Europe::Berlin;
-use timespan::{DateSpan, DateTimeSpan};
+use timespan::DateTimeSpan;
 
 #[test]
 fn new_test() {
@@ -35,8 +35,8 @@ fn new_test() {
             "Fri".parse().unwrap(),
         ],
         vec![
-            DateSpan::from_utc_datespan(&"2017-06-01 - 2017-09-01".parse().unwrap(), &Berlin),
-            DateSpan::from_utc_datespan(&"2017-10-01 - 2018-01-01".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(&"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(&"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(), &Berlin),
         ],
     );
 }
@@ -55,8 +55,8 @@ fn contains_datetime_test() {
             "Fri".parse().unwrap(),
         ],
         vec![
-            DateSpan::from_utc_datespan(&"2017-06-01 - 2017-09-01".parse().unwrap(), &Berlin),
-            DateSpan::from_utc_datespan(&"2017-10-01 - 2018-01-01".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(&"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(&"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(), &Berlin),
         ],
     );
 
@@ -85,8 +85,8 @@ fn contains_span_test() {
             "Fri".parse().unwrap(),
         ],
         vec![
-            DateSpan::from_utc_datespan(&"2017-06-01 - 2017-09-01".parse().unwrap(), &Berlin),
-            DateSpan::from_utc_datespan(&"2017-10-01 - 2018-01-01".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(&"2017-06-01T00:00:00 - 2017-09-01T00:00:00".parse().unwrap(), &Berlin),
+            DateTimeSpan::from_utc_datetimespan(&"2017-10-01T00:00:00 - 2018-01-01T00:00:00".parse().unwrap(), &Berlin),
         ],
     );
 

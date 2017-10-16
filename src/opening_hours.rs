@@ -28,7 +28,7 @@ where
 {
     pub open_hours: Vec<NaiveTimeSpan>,
     pub days_of_week: Vec<Weekday>,
-    pub valid_days: Vec<DateSpan<T>>,
+    pub valid_days: Vec<DateTimeSpan<T>>,
 }
 
 impl<T: TimeZone> OpeningHours<T>
@@ -38,7 +38,7 @@ where
     pub fn new(
         open_hours: Vec<NaiveTimeSpan>,
         days_of_week: Vec<Weekday>,
-        valid_days: Vec<DateSpan<T>>,
+        valid_days: Vec<DateTimeSpan<T>>,
     ) -> OpeningHours<T> {
         OpeningHours {
             open_hours: open_hours,
@@ -55,7 +55,7 @@ where
             return false;
         }
 
-        if !self.valid_days.iter().any(|ds| ds.contains(&date)) {
+        if !self.valid_days.iter().any(|ds| ds.contains(&time)) {
             return false;
         }
 
@@ -80,7 +80,7 @@ where
             weekday = weekday.succ();
         }
 
-        if !self.valid_days.iter().any(|ts| ts.is_superset(&datespan)) {
+        if !self.valid_days.iter().any(|ts| ts.is_superset(&span)) {
             return false;
         }
 
